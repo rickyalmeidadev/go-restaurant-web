@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 
 import ReactModal from 'react-modal';
 
@@ -11,11 +11,11 @@ interface IFoodPlate {
   available: boolean;
 }
 
-interface IModalProps {
-  children: any;
+type IModalProps = {
+  children: ReactNode;
   isOpen: boolean;
   setIsOpen: () => void;
-}
+};
 
 const Modal: React.FC<IModalProps> = ({ children, isOpen, setIsOpen }) => {
   const [modalStatus, setModalStatus] = useState(isOpen);

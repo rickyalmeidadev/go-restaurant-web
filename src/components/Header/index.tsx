@@ -5,9 +5,9 @@ import { Container } from './styles';
 
 import Logo from '../../assets/logo.svg';
 
-interface IHeaderProps {
+type IHeaderProps = {
   openModal: () => void;
-}
+};
 
 const Header: React.FC<IHeaderProps> = ({ openModal }) => (
   <Container>
@@ -15,12 +15,7 @@ const Header: React.FC<IHeaderProps> = ({ openModal }) => (
       <img src={Logo} alt="GoRestaurant" />
       <nav>
         <div>
-          <button
-            type="button"
-            onClick={() => {
-              /* TODO OPEN MODAL */
-            }}
-          >
+          <button type="button" onClick={openModal}>
             <div className="text">Novo Prato</div>
             <div className="icon">
               <FiPlusSquare size={24} />

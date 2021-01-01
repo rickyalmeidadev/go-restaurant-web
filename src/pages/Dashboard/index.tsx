@@ -26,44 +26,58 @@ const Dashboard: React.FC = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {
-    async function loadFoods(): Promise<void> {
-      // TODO LOAD FOODS
-    }
+    const fetchData = async (): Promise<void> => {
+      const { data } = await api.get('/foods');
+      setFoods(data);
+    };
 
-    loadFoods();
+    fetchData();
   }, []);
 
-  async function handleAddFood(
+  const handleAddFood = async (
     food: Omit<IFoodPlate, 'id' | 'available'>,
-  ): Promise<void> {
-    try {
-      // TODO ADD A NEW FOOD PLATE TO THE API
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  ): Promise<void> => {
+    const { data } = await api.post('/foods', {
+      ...food,
+      available: true,
+    });
 
-  async function handleUpdateFood(
+    setFoods(prevState => [...prevState, data]);
+  };
+
+  const handleUpdateFood = async (
     food: Omit<IFoodPlate, 'id' | 'available'>,
-  ): Promise<void> {
-    // TODO UPDATE A FOOD PLATE ON THE API
-  }
+  ): Promise<void> => {
+    const { data } = await api.put(`/foods/${editingFood.id}`, {
+      ...editingFood,
+      ...food,
+    });
 
-  async function handleDeleteFood(id: number): Promise<void> {
-    // TODO DELETE A FOOD PLATE FROM THE API
-  }
+    setFoods(prevState =>
+      prevState.map(eachFood =>
+        eachFood.id === editingFood.id ? data : eachFood,
+      ),
+    );
+  };
 
-  function toggleModal(): void {
+  const handleDeleteFood = async (id: number): Promise<void> => {
+    await api.delete(`/foods/${id}`);
+
+    setFoods(prevState => prevState.filter(food => food.id !== id));
+  };
+
+  const toggleModal = (): void => {
     setModalOpen(!modalOpen);
-  }
+  };
 
-  function toggleEditModal(): void {
+  const toggleEditModal = (): void => {
     setEditModalOpen(!editModalOpen);
-  }
+  };
 
-  function handleEditFood(food: IFoodPlate): void {
-    // TODO SET THE CURRENT EDITING FOOD ID IN THE STATE
-  }
+  const handleEditFood = (food: IFoodPlate): void => {
+    setEditingFood(food);
+    toggleEditModal();
+  };
 
   return (
     <>
